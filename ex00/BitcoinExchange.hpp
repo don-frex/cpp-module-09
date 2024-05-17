@@ -6,12 +6,13 @@
 /*   By: asaber <asaber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 17:55:38 by asaber            #+#    #+#             */
-/*   Updated: 2024/05/11 22:47:36 by asaber           ###   ########.fr       */
+/*   Updated: 2024/05/17 00:51:26 by asaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BITCOINEXCHANGE_HPP
 #define BITCOINEXCHANGE_HPP
+
 
 #include <iostream>
 #include <fstream>
@@ -19,6 +20,9 @@
 #include <sstream>
 #include <string>
 #include <map>
+
+#define ICYAN "\033[1;33m"
+#define RESET "\033[0m"
 
 class bitcoin_data
 {

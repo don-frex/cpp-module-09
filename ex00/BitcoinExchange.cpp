@@ -6,7 +6,7 @@
 /*   By: asaber <asaber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 18:07:13 by asaber            #+#    #+#             */
-/*   Updated: 2024/05/12 02:52:46 by asaber           ###   ########.fr       */
+/*   Updated: 2024/05/17 01:53:54 by asaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,22 @@ bitcoin_data::bitcoin_data(const bitcoin_data& other)
 	this->databtc = other.databtc;
 }
 // format 2009-01-02,0
-void parse_date(std::string &date, int line)
+bool parse_date(std::string &date_string)
 {
-	try{
-		for(int i = 0; i < (int) date.size(); i++)
-		{
-			if((!isdigit(date[i]) && !(i == 4 || i == 7 || i == 10)) || (date[4] != '-' || date[7] != '-' || date[10] != ','))
-				throw std::runtime_error("error in data in line " + std::to_string(line));
-		}
-	}
-	catch(const std::exception& e){
-		std::cerr << e.what() << '\n';
-		exit(1);
-	}
-	
+	int year, month, day, value;
+    char dash1, dash2, comma;
+	std::string end;
+
+    std::istringstream ss(date_string);
+
+    ss >> year >> dash1 >> month >> dash2 >> day >> comma >> value;
+	std::cout << "let check value" << value << std::endl;
+
+    if (ss.fail() || dash1 != '-' || dash2 != '-' || comma != ',') {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 bitcoin_data::bitcoin_data()
@@ -55,22 +57,15 @@ bitcoin_data::bitcoin_data()
 	int count = 1;
 	while (getline(input, line))
 	{
-		if (line.find("date,exchange_rate") != std::string::npos)
-		{
+		if (line.find("date,exchange_rate") != std::string::npos){
 			++count;
 			continue;
 		}
-		parse_date(line, count);
-		try
-		{
-			find = line.find(',');
-			if (find == std::string::npos)
-				throw std::runtime_error("this data is incorrect");
+		if (!parse_date(line)){
+			std::cerr << ICYAN << "this data is incorrect in line " + std::to_string(count) << RESET << std::endl;
+			exit(1);
 		}
-		catch(const std::exception& e)
-		{
-			std::cerr << e.what() << '\n';
-		}
+		find = line.find(',');
 		data = line.substr(0, find);
 		try
 		{
