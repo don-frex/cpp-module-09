@@ -6,7 +6,7 @@
 /*   By: asaber <asaber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 18:07:13 by asaber            #+#    #+#             */
-/*   Updated: 2024/05/17 01:53:54 by asaber           ###   ########.fr       */
+/*   Updated: 2024/05/19 23:54:22 by asaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,23 +21,42 @@ bitcoin_data::bitcoin_data(const bitcoin_data& other)
 {
 	this->databtc = other.databtc;
 }
-// format 2009-01-02,0
-bool parse_date(std::string &date_string)
+
+bool ifisdigit(std::string str)
 {
-	int year, month, day, value;
+	for(int i = 0; i < (int)str.length(); i++)
+	{
+		if(!isdigit(str[i]) && str[i] != '.' && str[0] != '-')
+			return false;
+	}
+	return true;
+}
+// format 2009-01-02,0
+bool parse_data(std::string &date_string)
+{
+	int year, month, day;
+	std::string s_value;
     char dash1, dash2, comma;
-	std::string end;
 
     std::istringstream ss(date_string);
-
-    ss >> year >> dash1 >> month >> dash2 >> day >> comma >> value;
-	std::cout << "let check value" << value << std::endl;
-
-    if (ss.fail() || dash1 != '-' || dash2 != '-' || comma != ',') {
-        return false;
-    } else {
+    ss >> year >> dash1 >> month >> dash2 >> day >> comma >> s_value;
+    if (dash1 != '-' || dash2 != '-' || comma != ',' || month > 12 || month <= 0 || day <= 0 || day > 31 || year <= 0 || year / 1000 < 1 || !ifisdigit(s_value))
+		return false;
+    return true;
+}
+//2011-09-14 | 390.57
+bool parse_input(std::string input)
+{
+	int year, month, day;
+    char dash1, dash2, pip;
+	std::string s_value;
+	
+	std::istringstream ss(input);
+	ss >> year >> dash1 >> month >> dash2 >> day >> pip >> s_value;
+	if (dash1 != '-' || dash2 != '-' || pip != '|' || month > 12 || month <= 0 || day <= 0 || day > 31 || year <= 0 || year / 1000 < 1 || !ifisdigit(s_value))
+		return false;
+	else
         return true;
-    }
 }
 
 bitcoin_data::bitcoin_data()
@@ -61,21 +80,20 @@ bitcoin_data::bitcoin_data()
 			++count;
 			continue;
 		}
-		if (!parse_date(line)){
+		if (!parse_data(line)){
 			std::cerr << ICYAN << "this data is incorrect in line " + std::to_string(count) << RESET << std::endl;
 			exit(1);
 		}
 		find = line.find(',');
 		data = line.substr(0, find);
-		try
-		{
+		try{
 			value = std::stod(line.substr(find + 1));
 		}
-		catch(const std::exception& e)
-		{
+		catch(const std::exception& e){
 			std::cerr << e.what() << '\n';
 		}
 		set_data(data, value);	
+		++count;
 	}
 	input.close();
 }
@@ -143,8 +161,12 @@ void decriment_date(std::string &date)
 float bitcoin_data::search_date(std::string date)
 {
 	std::string tmp;
-	std::map<std::string, float>::iterator it = databtc.begin();
-	//std::cout << "hello first incontainer " << it->first << std::endl;
+	std::map<std::string, float>::iterator it;
+	it = --databtc.end();
+	if (std::strcmp(date.c_str(), it->first.c_str()) >= 0)
+		return (it->second);
+	else
+		it = databtc.begin();
 	
 	while(std::strcmp(date.c_str(), "2009-01-02") >= 0)
 	{
@@ -170,7 +192,7 @@ bool ifhasnum(std::string line)
 	return false;
 }
 
-void	bitcoin_data::start_fetshing(std::string input_file)
+void	bitcoin_data::start(std::string input_file)
 {
 	std::ifstream input(input_file);
 	std::string line;
@@ -190,14 +212,13 @@ void	bitcoin_data::start_fetshing(std::string input_file)
 			continue;
 		try{
 			find = line.find(' ');
-			if (!ifhasnum(line) || find == std::string::npos)
+			if (!parse_input(line))
 				throw std::runtime_error("Error: bad input => " + line);
 		}
 		catch(const std::exception& e){
 			std::cerr << e.what() << '\n';
 			continue;
 		}
-
 		date = line.substr(0, find);
 		value = search_date(date);
 		try{
