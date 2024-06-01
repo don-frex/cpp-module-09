@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   RPN.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asaber <asaber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/21 15:58:26 by asaber            #+#    #+#             */
-/*   Updated: 2024/05/28 00:49:28 by asaber           ###   ########.fr       */
+/*   Created: 2024/04/28 21:47:48 by asaber            #+#    #+#             */
+/*   Updated: 2024/05/26 22:51:16 by asaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "BitcoinExchange.hpp"
+#ifndef RPN_HPP
+#define RPN_HPP
 
-#include <iostream>
+#include<iostream>
+#include<sstream>
+#include <stack>
 
-int	main(int ac, char **av)
-{
-	(void) av;
-	bitcoin_data btc;
-	if (ac == 2)
-		btc.start(av[1]);
-	else
-		std::cout << ICYAN << "Bad passing ARGS!! try agin\n" << RESET;
-	return (0);	
-}
+void	Start_RPN(std::string input);
+
+#endif

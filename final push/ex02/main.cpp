@@ -5,22 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: asaber <asaber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/21 15:58:26 by asaber            #+#    #+#             */
-/*   Updated: 2024/05/28 00:49:28 by asaber           ###   ########.fr       */
+/*   Created: 2024/05/02 23:28:28 by asaber            #+#    #+#             */
+/*   Updated: 2024/05/09 21:26:35 by asaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "BitcoinExchange.hpp"
-
-#include <iostream>
+#include "PmergeMe.hpp"
 
 int	main(int ac, char **av)
 {
-	(void) av;
-	bitcoin_data btc;
-	if (ac == 2)
-		btc.start(av[1]);
+	if (ac >= 2)
+		Pmergeme list(ac, av);
 	else
-		std::cout << ICYAN << "Bad passing ARGS!! try agin\n" << RESET;
-	return (0);	
+		std::cout << ALERT << "bad input !!" << RESET << std::endl;
 }

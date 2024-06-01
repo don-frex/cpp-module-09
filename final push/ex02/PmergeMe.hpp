@@ -1,26 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   PmergeMe.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asaber <asaber@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/21 15:58:26 by asaber            #+#    #+#             */
-/*   Updated: 2024/05/28 00:49:28 by asaber           ###   ########.fr       */
+/*   Created: 2024/05/01 01:32:10 by asaber            #+#    #+#             */
+/*   Updated: 2024/05/11 22:46:54 by asaber           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "BitcoinExchange.hpp"
+#ifndef PMERGEME_HPP
+#define PMERGEME_HPP
 
 #include <iostream>
+#include <vector>
+#include <deque>
+#include <list>
+#include <map>
+#include <queue>
+#include <chrono>
+#include <ctime>
+#include <cstdlib>
 
-int	main(int ac, char **av)
+
+#define ALERT "\033[1;33m"
+#define RESET "\033[0m]"
+
+class	Pmergeme
 {
-	(void) av;
-	bitcoin_data btc;
-	if (ac == 2)
-		btc.start(av[1]);
-	else
-		std::cout << ICYAN << "Bad passing ARGS!! try agin\n" << RESET;
-	return (0);	
-}
+	public:
+		Pmergeme();
+		Pmergeme(int ac, char **av);
+		Pmergeme(const Pmergeme& other);
+		Pmergeme& operator = (const Pmergeme& other);
+		~Pmergeme();
+};
+
+#endif
