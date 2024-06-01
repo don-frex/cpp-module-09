@@ -16,7 +16,6 @@
 
 int	main(int ac, char **av)
 {
-	(void) av;
 	bitcoin_data btc;
 	if (ac == 2)
 		btc.start(av[1]);
