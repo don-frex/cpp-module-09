@@ -73,6 +73,6 @@ void	Start_RPN(std::string input)
 		std::cout << "resualt is: " << RNP.top() << std::endl;
 		RNP.pop();
 	}
-// 	else
-// 		std::cout << "bad input " << std::endl;
+ 	else
+ 		std::cout << "bad input " << std::endl;
 }
